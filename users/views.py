@@ -1,7 +1,8 @@
+from requests import request
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework.generics import ListAPIView
 from django.contrib.auth.models import User
+from rest_framework.generics import ListAPIView, CreateAPIView
 
 from users.serializers import UserSerializer
 
@@ -9,7 +10,9 @@ from users.serializers import UserSerializer
 def home(request):
     return Response({'data': 'hello world'})
 
-
-class UserList(ListAPIView):
+class UsersList(ListAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+
+class CreateUser(CreateAPIView):
+    serializer_class = UserSerializer

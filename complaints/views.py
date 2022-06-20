@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from rest_framework.generics import ListAPIView, CreateAPIView
+from .serializers import ComplaintSerializer
+from .models import Complaint
 
-# Create your views here.
+
+class AllComplaints(ListAPIView):
+    serializer_class = ComplaintSerializer
+    queryset = Complaint.objects.all()
+
+
+class CreateComplaint(CreateAPIView):
+    serializer_class = ComplaintSerializer

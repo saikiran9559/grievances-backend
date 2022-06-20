@@ -28,6 +28,7 @@ INSTALLED_APPS = [
 
     # apps
     'users',
+    'complaints',
 
     # third party
     'rest_framework',

@@ -10,6 +10,10 @@ class AllComplaints(ListAPIView):
     queryset = Complaint.objects.all()
     permissions=[permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        query_set = self.queryset.filter(user=self.request.user)
+        return query_set
+
 class CreateComplaint(CreateAPIView):
     serializer_class = ComplaintSerializer
     permissions=[permissions.IsAuthenticated]

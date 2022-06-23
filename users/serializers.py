@@ -8,7 +8,7 @@ from users.models import Profile, StaffProfile
 class ProfileSearializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('is_admin', 'is_staff', 'is_student')
+        fields = ('user_role',)
 
     def save(self, **kwargs):
         return super().save(**kwargs)
@@ -28,8 +28,7 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         Profile.objects.create(user=user, **profile_data)
-        if(profile_data['is_staff']):
-            StaffProfile.objects.create(user=user)
+        print(profile_data)
         return user
 
 class StaffProfileSerializer(serializers.ModelSerializer):
@@ -45,9 +44,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         user_obj = User.objects.get(id=self.user.id)
         data.update({'user': {
             'username': user_obj.username,
-            'is_staff': profile_obj.is_staff, 
-            'is_student': profile_obj.is_student, 
-            'is_admin': profile_obj.is_admin
+            'user_role': profile_obj.user_role
             }
         })
+        if(profile_obj.user_role == 2):
+            StaffProfile.objects.create(user=self.user)
         return data

@@ -1,8 +1,9 @@
+from dataclasses import fields
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.models import User
 
-from users.models import Profile
+from users.models import Profile, StaffProfile
 
 class ProfileSearializer(serializers.ModelSerializer):
     class Meta:
@@ -27,9 +28,14 @@ class UserSerializer(serializers.ModelSerializer):
         user.set_password(validated_data['password'])
         user.save()
         Profile.objects.create(user=user, **profile_data)
+        if(profile_data['is_staff']):
+            StaffProfile.objects.create(user=user)
         return user
 
-
+class StaffProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StaffProfile
+        fields = '__all__'
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):

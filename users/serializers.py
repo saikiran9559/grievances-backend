@@ -13,8 +13,6 @@ class ProfileSearializer(serializers.ModelSerializer):
     def save(self, **kwargs):
         return super().save(**kwargs)
 
-    
-
 class UserSerializer(serializers.ModelSerializer):
     profile = ProfileSearializer()
     class Meta:
